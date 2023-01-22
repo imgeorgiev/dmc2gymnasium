@@ -46,8 +46,8 @@ class DMCGym(Env):
         self,
         domain,
         task,
-        task_kwargs=None,
-        environment_kwargs=None,
+        task_kwargs={},
+        environment_kwargs={},
         rendering="egl",
     ):
         """TODO comment up"""
