@@ -104,14 +104,18 @@ class DMCGym(Env):
         info = {"discount": timestep.discount}
         return observation, reward, termination, truncation, info
 
-    def reset(self, seed=None):
+    def reset(self, seed=None, options=None):
         if seed:
             logging.warn(
                 "Currently DMC has no way of seeding episodes. It only allows to seed experiments on environment initialization"
             )
+
+        if options:
+            logging.warn("Currently doing nothing with options={:}".format(options))
         timestep = self._env.reset()
         observation = _flatten_obs(timestep.observation)
-        return observation
+        info = {}
+        return observation, info
 
     def render(self, height, width, camera_id=0):
         return self._env.physics.render(height=height, width=width, camera_id=camera_id)
