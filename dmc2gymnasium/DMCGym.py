@@ -49,6 +49,9 @@ class DMCGym(Env):
         task_kwargs={},
         environment_kwargs={},
         rendering="egl",
+        render_height=64,
+        render_width=64,
+        render_camera_id=0,
     ):
         """TODO comment up"""
 
@@ -65,6 +68,9 @@ class DMCGym(Env):
 
         # placeholder to allow built in gymnasium rendering
         self.render_mode = "rgb_array"
+        self.render_height = render_height
+        self.render_width = render_width
+        self.render_camera_id = render_camera_id
 
         self._observation_space = _spec_to_box(self._env.observation_spec().values())
         self._action_space = _spec_to_box([self._env.action_spec()])
@@ -117,5 +123,8 @@ class DMCGym(Env):
         info = {}
         return observation, info
 
-    def render(self, height, width, camera_id=0):
+    def render(self, height=None, width=None, camera_id=None):
+        height = height or self.render_height
+        width = width or self.render_width
+        camera_id = camera_id or self.render_camera_id
         return self._env.physics.render(height=height, width=width, camera_id=camera_id)
