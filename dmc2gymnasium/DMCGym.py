@@ -2,11 +2,12 @@
 
 import logging
 import os
-from gymnasium.spaces import Box
-from gymnasium.core import Env
+
 import numpy as np
 from dm_control import suite
 from dm_env import specs
+from gymnasium.core import Env
+from gymnasium.spaces import Box
 
 
 def _spec_to_box(spec, dtype=np.float32):
@@ -111,10 +112,10 @@ class DMCGym(Env):
         return observation, reward, termination, truncation, info
 
     def reset(self, seed=None, options=None):
-        if seed:
-            logging.warn(
-                "Currently DMC has no way of seeding episodes. It only allows to seed experiments on environment initialization"
-            )
+        if seed is not None:
+            if not isinstance(seed, np.random.RandomState):
+                seed = np.random.RandomState(seed)
+            self._env.task._random = seed
 
         if options:
             logging.warn("Currently doing nothing with options={:}".format(options))
